@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.ankit.ankitkrsingh_reddit.presentation.common.Converter"/>
+        <variable
+            name="popularItem"
+            type="com.ankit.ankitkrsingh_reddit.domain.model.PopularItem"
+            />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/window_margin_standard"
+        >
+        <ImageView
+            android:id="@+id/ivUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_drop_up_black_24dp"
+            app:layout_constraintStart_toStartOf="@id/tvUps"
+            app:layout_constraintEnd_toEndOf="@id/tvUps"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvUps"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            />
+        <TextView
+            android:id="@+id/tvUps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextView.Content.Small"
+            tools:text="200"
+            android:text='@{popularItem.ups+""}'
+            android:padding="@dimen/padding_standard"
+            android:textColor="@color/text_color_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivUp"
+            android:maxLines="@integer/default_line"
+            android:minWidth="@dimen/min_width_of_ups_text"
+            android:gravity="center"
+            />
+        <ImageView
+            android:id="@+id/ivDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_drop_down_black_24dp"
+            app:layout_constraintStart_toStartOf="@id/tvUps"
+            app:layout_constraintEnd_toEndOf="@id/tvUps"
+            app:layout_constraintTop_toBottomOf="@id/tvUps"
+            android:contentDescription="@string/app_name" />
+        <TextView
+            android:id="@+id/tvPopularTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextView.Content"
+            tools:text="The Last Supper"
+            android:text='@{popularItem.title??""}'
+            android:paddingStart="@dimen/padding_standard"
+            android:paddingEnd="@dimen/padding_standard"
+            android:paddingTop="@dimen/padding_standard"
+            app:layout_constraintStart_toEndOf="@id/tvUps"
+            app:layout_constraintEnd_toStartOf="@id/ivPopular"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvPopularType"
+            app:layout_constraintVertical_chainStyle="packed"
+            />
+        <TextView
+            android:id="@+id/tvPopularType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextView.Content.Small"
+            tools:text="comics . i.redd.it . 1h"
+            android:text='@{Converter.getAuthorAndDateFormat(popularItem.author, popularItem.domain, popularItem.created)}'
+            android:paddingStart="@dimen/padding_standard"
+            android:paddingEnd="@dimen/padding_standard"
+            app:layout_constraintStart_toEndOf="@id/tvUps"
+            app:layout_constraintEnd_toStartOf="@id/ivPopular"
+            app:layout_constraintTop_toBottomOf="@id/tvPopularTitle"
+            app:layout_constraintBottom_toTopOf="@id/tvComment"
+            android:textColor="@color/text_color_light"
+            />
+        <TextView
+            android:id="@+id/tvComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextView.Content.Small"
+            tools:text="8 comments"
+            android:text='@{popularItem.numComments + " " + @string/commnents_text}'
+            android:paddingStart="@dimen/padding_standard"
+            android:paddingEnd="@dimen/padding_standard"
+            app:layout_constraintStart_toEndOf="@id/tvUps"
+            app:layout_constraintTop_toBottomOf="@id/tvPopularType"
+            android:textColor="@color/text_color_light"
+            />
+        <ImageView
+            android:id="@+id/ivPopular"
+            android:layout_width="@dimen/size_popular_list_item_image"
+            android:layout_height="@dimen/size_popular_list_item_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/color_background"
+            android:contentDescription="@string/app_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

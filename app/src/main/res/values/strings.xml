@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AnkitKrSingh_Reddit</string>
+    <string name="popular_title_text">Popular</string>
+    <string name="filter_button_text">filter</string>commnents_text
+    <string name="commnents_text">Comments</string>
+    <string name="hot_title">Hot</string>
+    <string name="rising_title">Rising</string>
+    <string name="comments_title_text">Comments</string>
+    <string name="share_text">Share</string>
+    <string name="choose_one_text">choose one</string>
+    <string name="reply_text">Reply</string>
+</resources>

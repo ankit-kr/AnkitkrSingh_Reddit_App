@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.ankit.ankitkrsingh_reddit.presentation.common.Converter"/>
+        <import type="com.ankit.ankitkrsingh_reddit.presentation.home.SharedHomeViewModel.Filter"/>
+        <variable
+            name="viewModel"
+            type="com.ankit.ankitkrsingh_reddit.presentation.home.SharedHomeViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.home.HomeFragment"
+        android:background="@color/white"
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:id="@+id/tvToolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comments_title_text"
+                    style="@style/Base.TextView.Title"
+                    android:layout_marginStart="@dimen/window_margin"
+                    android:layout_marginEnd="@dimen/window_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tvToolbarSubTitle"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    />
+                <TextView
+                    android:id="@+id/tvToolbarSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/popular_title_text"
+                    android:text="@{viewModel.currentFilter== Filter.RISING?@string/hot_title: @string/rising_title}"
+                    style="@style/Base.TextView.Content.Small"
+                    android:layout_marginStart="@dimen/window_margin"
+                    android:layout_marginEnd="@dimen/window_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvToolbarTitle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <FrameLayout
+                    android:id="@+id/flCommentFilterButton"
+                    android:layout_width="@dimen/size_toolbar_button"
+                    android:layout_height="@dimen/size_toolbar_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:onClick="@{() ->viewModel.onCommentMenuClick()}"
+                    >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_filter_list_black_24dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/filter_button_text" />
+                </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/window_margin_standard"
+                >
+                <TextView
+                    android:id="@+id/tvPopularTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextView.Content"
+                    tools:text="The Last Supper"
+                    android:text='@{viewModel.selectedPopularItem.title??""}'
+                    android:paddingStart="@dimen/padding_standard"
+                    android:paddingEnd="@dimen/padding_standard"
+                    android:paddingTop="@dimen/padding_standard"
+                    app:layout_constraintStart_toEndOf="@id/ivPopular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tvPopularType"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    />
+                <TextView
+                    android:id="@+id/tvPopularType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextView.Content.Small"
+                    tools:text="comics . i.redd.it . 1h"
+                    android:text='@{Converter.getAuthorAndDateFormat(viewModel.selectedPopularItem.author, viewModel.selectedPopularItem.domain, viewModel.selectedPopularItem.created)}'
+                    android:paddingStart="@dimen/padding_standard"
+                    android:paddingEnd="@dimen/padding_standard"
+                    app:layout_constraintStart_toEndOf="@id/ivPopular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvPopularTitle"
+                    app:layout_constraintBottom_toTopOf="@id/tvComment"
+                    android:textColor="@color/text_color_light"
+                    />
+                <TextView
+                    android:id="@+id/tvComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextView.Content"
+                    tools:text="8 comments"
+                    android:text='@{viewModel.selectedPopularItem.numComments + " " + @string/commnents_text}'
+                    android:paddingStart="@dimen/padding_standard"
+                    android:paddingEnd="@dimen/padding_standard"
+                    app:layout_constraintStart_toEndOf="@id/tvUps"
+                    app:layout_constraintTop_toTopOf="@id/tvUps"
+                    app:layout_constraintBottom_toBottomOf="@id/tvUps"
+                    android:textColor="@color/text_color_light"
+                    />
+                <TextView
+                    android:id="@+id/tvUps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextView.Content.Small"
+                    tools:text="200"
+                    android:text='@{viewModel.selectedPopularItem.ups+""}'
+                    android:padding="@dimen/padding_standard"
+                    android:textColor="@color/text_color_light"
+                    app:layout_constraintStart_toEndOf="@id/ivPopular"
+                    app:layout_constraintTop_toBottomOf="@id/tvPopularType"
+                    android:maxLines="@integer/default_line"
+                    android:minWidth="@dimen/min_width_of_ups_text"
+                    android:gravity="center"
+                    />
+                <ImageView
+                    android:id="@+id/ivPopular"
+                    android:layout_width="@dimen/size_popular_list_item_image"
+                    android:layout_height="@dimen/size_popular_list_item_image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/color_background"
+                    android:contentDescription="@string/app_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+                <FrameLayout
+                    android:id="@+id/flShare"
+                    android:layout_width="@dimen/size_toolbar_button"
+                    android:layout_height="@dimen/size_toolbar_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvUps"
+                    android:layout_marginTop="@dimen/window_margin_standard"
+                    android:onClick="@{() -> viewModel.onPostShareClick()}"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/share_text"
+                        android:src="@drawable/ic_share_black_24dp"
+                        android:tint="@color/text_color_light" />
+                </FrameLayout>
+                <View
+                    android:id="@+id/viewDividerLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flShare"
+                    android:background="@color/text_color_light"
+                    />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewDividerLine"
+                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
